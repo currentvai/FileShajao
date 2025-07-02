@@ -29,7 +29,7 @@ def display_banner():
 ██      ██ ███████ ███████ ███████ ██   ██ ██   ██  █████  ██   ██  ██████  
 """
     print(f"{C_CYAN}{banner_art}{C_RESET}")
-    print(f"{C_BLUE}Developed By Current Vai ♚ | FileShajao v4.0 (Undo & Recycle Bin Edition){C_RESET}")
+    print(f"{C_BLUE}Developed By Current Vai ♚ | FileShajao v2.0 (Undo & Recycle Bin Edition){C_RESET}")
     print(f"{C_GREEN}GitHub: https://github.com/currentvai{C_RESET}")
     print(f"{C_GREEN}Telegram: https://t.me/currentvai{C_RESET}\n")
 
