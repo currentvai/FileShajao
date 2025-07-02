@@ -11,9 +11,8 @@
 
 **Developed By: Current Vai ♚**
 
-[![GitHub](https://img.shields.io/badge/GitHub-YourUsername-blue?style=for-the-badge&logo=github)](https://github.com/currentvai)
-[![Telegram](https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram)](https://t.me/currentvai)
-
+[![GitHub](https://img.shields.io/badge/GitHub-currentvai-blue?style=for-the-badge&logo=github)](https://github.com/currentvai)
+[![Telegram](https://img.shields.io/badge/Telegram-currentvai-blue?style=for-the-badge&logo=telegram)](https://t.me/currentvai)
 </div>
 
 ---
