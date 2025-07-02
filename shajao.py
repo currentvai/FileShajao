@@ -29,26 +29,45 @@ def display_banner():
 ██      ██ ███████ ███████ ███████ ██   ██ ██   ██  █████  ██   ██  ██████  
 """
     print(f"{C_CYAN}{banner_art}{C_RESET}")
-    print(f"{C_BLUE}Developed By Current Vai ♚ | FileShajao v2.0 (Undo & Recycle Bin Edition){C_RESET}")
+    print(f"{C_BLUE}Developed By Current Vai ♚ | FileShajao v4.0 (Undo & Recycle Bin Edition){C_RESET}")
     print(f"{C_GREEN}GitHub: https://github.com/currentvai{C_RESET}")
     print(f"{C_GREEN}Telegram: https://t.me/currentvai{C_RESET}\n")
 
+# ##############################################################
+# ################## সংশোধিত ফাংশন (এরর হ্যান্ডলিং সহ) ###########
+# ##############################################################
 def get_available_storages():
     storages = []
-    internal_storage = '/sdcard'
-    if os.path.exists(internal_storage):
-        storages.append({'name': 'Internal Storage', 'path': internal_storage})
+    # ইন্টারনাল স্টোরেজ
+    internal_storage_paths = ['/sdcard', '/storage/emulated/0']
+    for path in internal_storage_paths:
+        try:
+            if os.path.exists(path) and os.path.isdir(path):
+                storages.append({'name': 'Internal Storage', 'path': path})
+                logging.info(f"Internal storage found at: {path}")
+                break # একটি পাওয়া গেলেই লুপ থেকে বের হয়ে যাবে
+        except Exception as e:
+            logging.error(f"Error accessing internal storage at {path}: {e}")
+
+    # এক্সটারনাল স্টোরেজ (SD Card)
     base_storage_path = '/storage'
-    if os.path.exists(base_storage_path):
-        all_dirs = os.listdir(base_storage_path)
-        sd_cards = [d for d in all_dirs if d != 'emulated' and os.path.isdir(os.path.join(base_storage_path, d))]
-        if sd_cards:
-            storages.append({'name': 'External SD Card', 'path': os.path.join(base_storage_path, sd_cards[0])})
+    try:
+        if os.path.exists(base_storage_path) and os.path.isdir(base_storage_path):
+            all_dirs = os.listdir(base_storage_path)
+            sd_cards = [d for d in all_dirs if d not in ['emulated', 'self'] and os.path.isdir(os.path.join(base_storage_path, d))]
+            if sd_cards:
+                sd_card_path = os.path.join(base_storage_path, sd_cards[0])
+                storages.append({'name': 'External SD Card', 'path': sd_card_path})
+                logging.info(f"External SD card found at: {sd_card_path}")
+    except Exception as e:
+        logging.error(f"Error accessing external storage at {base_storage_path}: {e}")
+            
     return storages
 
 def select_storage(storages):
     if not storages:
-        print(f"{C_RED}[!] No storage found! Please grant storage permission.{C_RESET}")
+        print(f"{C_RED}[!] No storage found! Please run 'termux-setup-storage' and restart Termux.{C_RESET}")
+        logging.critical("No storage devices found. Exiting.")
         return None
     print(f"{C_YELLOW}[>] Select a storage to scan:{C_RESET}")
     for i, storage in enumerate(storages):
@@ -85,7 +104,8 @@ def select_folder_interactive(base_path):
                     if 1 <= choice_num <= len(directories): current_path = os.path.join(current_path, directories[choice_num-1])
                     else: print(f"{C_RED}[!] Invalid number.{C_RESET}"); time.sleep(1)
                 except ValueError: print(f"{C_RED}[!] Invalid input.{C_RESET}"); time.sleep(1)
-        except Exception as e: print(f"{C_RED}[!] Error: {e}{C_RESET}"); return None
+        except Exception as e:
+            print(f"{C_RED}[!] Error: {e}{C_RESET}"); logging.error(f"Error in interactive selection: {e}"); time.sleep(2); return None
 
 def setup_recycle_bin(target_dir):
     recycle_path = os.path.join(target_dir, RECYCLE_BIN_NAME)
@@ -112,22 +132,25 @@ def manage_recycle_bin(recycle_bin_dir):
     while True:
         os.system('clear'); display_banner()
         print(f"{C_YELLOW}--- Recycle Bin Management ---{C_RESET}\nLocation: {recycle_bin_dir}")
-        files_in_bin = sorted(os.listdir(recycle_bin_dir))
-        if not files_in_bin:
-            print(f"\n{C_GREEN}[i] Recycle bin is empty.{C_RESET}"); input("\nPress Enter to return..."); return
-        print("\nFiles in Recycle Bin:")
-        for i, filename in enumerate(files_in_bin): print(f"  [{i+1}] {filename}")
-        print("\nOptions:\n  [e] Empty recycle bin (Permanent Delete!)\n  [b] Back to main menu")
-        choice = input(f"\n{C_GREEN}[+] Enter your choice: {C_RESET}").lower()
-        if choice == 'b': break
-        elif choice == 'e':
-            confirm = input(f"{C_RED}[!] Are you sure you want to permanently delete ALL files? (yes/no): {C_RESET}").lower()
-            if confirm == 'yes':
-                for filename in tqdm(files_in_bin, desc="Emptying Bin"):
-                    try: os.remove(os.path.join(recycle_bin_dir, filename))
-                    except Exception as e: logging.error(f"Failed to delete from bin: {filename}, {e}")
-                print(f"{C_GREEN}[✔] Recycle bin emptied.{C_RESET}"); logging.warning("Recycle bin emptied."); time.sleep(2)
-        else: print(f"{C_RED}[!] Invalid option.{C_RESET}"); time.sleep(1)
+        try:
+            files_in_bin = sorted(os.listdir(recycle_bin_dir))
+            if not files_in_bin:
+                print(f"\n{C_GREEN}[i] Recycle bin is empty.{C_RESET}"); input("\nPress Enter to return..."); return
+            print("\nFiles in Recycle Bin:")
+            for i, filename in enumerate(files_in_bin): print(f"  [{i+1}] {filename}")
+            print("\nOptions:\n  [e] Empty recycle bin (Permanent Delete!)\n  [b] Back to main menu")
+            choice = input(f"\n{C_GREEN}[+] Enter your choice: {C_RESET}").lower()
+            if choice == 'b': break
+            elif choice == 'e':
+                confirm = input(f"{C_RED}[!] Are you sure you want to permanently delete ALL files? (yes/no): {C_RESET}").lower()
+                if confirm == 'yes':
+                    for filename in tqdm(files_in_bin, desc="Emptying Bin"):
+                        try: os.remove(os.path.join(recycle_bin_dir, filename))
+                        except Exception as e: logging.error(f"Failed to delete from bin: {filename}, {e}")
+                    print(f"{C_GREEN}[✔] Recycle bin emptied.{C_RESET}"); logging.warning("Recycle bin emptied."); time.sleep(2)
+            else: print(f"{C_RED}[!] Invalid option.{C_RESET}"); time.sleep(1)
+        except Exception as e:
+            print(f"{C_RED}[!] Error accessing recycle bin: {e}{C_RESET}"); logging.error(f"Error in manage_recycle_bin: {e}"); time.sleep(2); break
 
 def calculate_hash(filepath):
     sha256 = hashlib.sha256()
@@ -143,7 +166,7 @@ def find_duplicate_files(target_dir, recycle_bin_dir):
     if not filepaths: print(f"{C_GREEN}[✔] No files to scan.{C_RESET}"); return
     print(f"{C_GREEN}[i] Found {len(filepaths)} files. Calculating hashes...{C_RESET}")
     hashes, duplicates = {}, []
-    with ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
         futures = {executor.submit(calculate_hash, path) for path in filepaths}
         with tqdm(total=len(futures), desc="Hashing Files", unit="file") as pbar:
             for future in as_completed(futures):
@@ -237,7 +260,7 @@ def main():
                 if target_folder:
                     logging.info(f"User selected folder: {target_folder}")
                     if main_menu(target_folder) == 'reselect': continue
-            break
+            break # লুপ থেকে বের হয়ে যাবে যদি কোনো স্টোরেজ না পাওয়া যায় বা ব্যবহারকারী কাজ শেষ করে
     except KeyboardInterrupt:
         logging.info("Program interrupted by user (Ctrl+C).")
         print(f"\n{C_RED}[!] Process interrupted. Exiting.{C_RESET}")
