@@ -20,7 +20,7 @@
 ---
 
 <!-- Add a link to your logo here -->
-<img src="https://example.com/path-to-your-logo.png" alt="FileShajao Logo" width="150"/>
+<img src="assets/image/logo.png" alt="FileShajao Logo" width="300"/>
 
 # FileShajao v4.0
 
