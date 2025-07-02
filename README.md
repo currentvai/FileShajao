@@ -1,6 +1,6 @@
 <div align="center">
 
-# FileShajao v2.0
+# FileShajao v4.0
 
 **An Intelligent File Manager & Cleaner for Your Android Device**
 
@@ -22,7 +22,7 @@
 <!-- Add a link to your logo here -->
 <img src="https://example.com/path-to-your-logo.png" alt="FileShajao Logo" width="150"/>
 
-# FileShajao v2.0
+# FileShajao v4.0
 
 **An Intelligent File Manager & Cleaner for Your Android Device**
 
@@ -147,7 +147,7 @@ Contributions are welcome! If you have ideas for new features, bug reports, or c
 
 ### 📜 License
 
-Copyright (c) 2024 Current Vai.
+Copyright (c) 2025 Current Vai.
 
 **All Rights Reserved.**
 
