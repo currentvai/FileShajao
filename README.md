@@ -119,7 +119,7 @@ And you're all set! The tool will now start.
 This single command will perform all setup, download, and execution steps at once. Just copy, paste, and run.
 
 ```bash
-pkg update -y && pkg upgrade -y && pkg install python git -y && pip install tqdm && termux-setup-storage && git clone https://github.com/currentvai/file-shajao.git && cd file-shajao && python shajao.py
+pkg update -y && pkg upgrade -y && pkg install python git -y && pip install tqdm && termux-setup-storage && git clone https://github.com/currentvai/FileShajao.git && cd file-shajao && python shajao.py
 ```
 *(Note: You will still need to manually tap "Allow" when the storage permission pop-up appears.)*
 
