@@ -11,8 +11,8 @@
 
 **Developed By: Current Vai ♚**
 
-[![GitHub](https://img.shields.io/badge/GitHub-YourUsername-blue?style=for-the-badge&logo=github)](https://github.com/YourUsername/file-shajao)
-[![Telegram](https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram)](https://t.me/YourTelegramUsername)
+[![GitHub](https://img.shields.io/badge/GitHub-YourUsername-blue?style=for-the-badge&logo=github)](https://github.com/currentvai)
+[![Telegram](https://img.shields.io/badge/Telegram-Channel-blue?style=for-the-badge&logo=telegram)](https://t.me/currentvai)
 
 </div>
 
@@ -49,14 +49,14 @@ A powerful and interactive script for Android (via Termux) to automatically orga
 
 4.  **Clone This Repository:**
     ```bash
-    git clone https://github.com/YourUsername/file-shajao.git
+    git clone https://github.com/currentvai/FileShajao.git
     ```
 
 5.  **Run the Script:**
     Navigate into the cloned directory and run the Python script:
     ```bash
-    cd file-shajao
-    python rearrange.py
+    cd FileShajao
+    python shajao.py
     ```
 
 Now just follow the on-screen instructions to select your storage and folder!
