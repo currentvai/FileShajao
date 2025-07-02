@@ -97,7 +97,7 @@ termux-setup-storage
 **Step 2: Download FileShajao**
 # Clone the repository from GitHub
 ```bash
-git clone https://github.com/currentvai/file-shajao.git
+git https://github.com/currentvai/FileShajao.git
 ```
 
 **Step 3: Run the Tool**
